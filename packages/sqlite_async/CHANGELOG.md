@@ -1,3 +1,11 @@
+## 0.14.7 (wojciechlas fork)
+
+- Web: fix uncaught error from `BroadcastUpdates` when a peer publishes a
+  message that does not deserialise into an `UpdateNotification`. The bare
+  `.cast()` after `.where()` is now typed explicitly, and a defensive
+  `onError` handler is attached to the broadcast subscription (now in the
+  worker, see #161) so malformed peer payloads degrade silently.
+
 ## 0.14.7
 
 - Native: Avoid a database lock in `close()`.

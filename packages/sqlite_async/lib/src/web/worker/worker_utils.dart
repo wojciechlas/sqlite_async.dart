@@ -83,7 +83,13 @@ base class AsyncSqliteDatabase extends WorkerDatabase {
 
       // Also add updates from other tabs, note that things we send aren't
       // received by our tab.
-      _subscriptions.add(broadcast.updates.listen(_updates.add));
+      _subscriptions.add(broadcast.updates.listen(_updates.add,
+          onError: (Object error, StackTrace stackTrace) {
+        // Cross-tab BroadcastChannel may deliver payloads that do not
+        // deserialise into an UpdateNotification (legacy storage mode,
+        // malformed peer messages). Drop them rather than crashing the
+        // worker via an uncaught error on the root zone.
+      }));
     }
   }
 
